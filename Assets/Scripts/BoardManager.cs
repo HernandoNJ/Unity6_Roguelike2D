@@ -12,6 +12,7 @@ public class BoardManager : MonoBehaviour {
     [SerializeField] private PlayerController m_PlayerController;
 
     [SerializeField] private Tile[] groundTiles;
+    [SerializeField] private Tile[] wallTiles;
     [SerializeField] private Tile[] blockingTiles;
 
     [SerializeField] private int width;
@@ -30,8 +31,18 @@ public class BoardManager : MonoBehaviour {
         {
             for(int x = 0; x < width; ++x)
             {
-                int tileNumber = Random.Range(0, groundTiles.Length);
-                m_tilemap.SetTile(new Vector3Int(x, y, 0), groundTiles[tileNumber]);
+                Tile tile;
+              
+                if(x == 0 || y == 0 || x == width - 1 || y == height - 1)
+                {
+                    tile = wallTiles[Random.Range(0, wallTiles.Length)];
+                }
+                else
+                {
+                    tile = groundTiles[Random.Range(0, groundTiles.Length)];
+                }
+              
+                m_tilemap.SetTile(new Vector3Int(x, y, 0), tile);
             }
         }
     }

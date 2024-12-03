@@ -188,6 +188,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 78b7e37146b8e7c4a92e27d4025c4ee6, type: 2}
   - {fileID: 11400000, guid: 78b7e37146b8e7c4a92e27d4025c4ee6, type: 2}
   - {fileID: 11400000, guid: b85bc73d46c4eb542afe4cade7114794, type: 2}
+  wallTiles:
+  - {fileID: 11400000, guid: 7c224a5ada59209408edd574b5d6d650, type: 2}
+  - {fileID: 11400000, guid: e056b82e70d5c7745847ad2adb38c3ec, type: 2}
   blockingTiles: []
   width: 8
   height: 8
