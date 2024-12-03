@@ -29,6 +29,9 @@
 # idea
 .idea/
 
+# Plastic
+.plastic/
+
 # Gradle cache directory
 .gradle/
 
