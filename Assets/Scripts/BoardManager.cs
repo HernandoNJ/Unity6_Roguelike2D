@@ -1,12 +1,20 @@
-using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
-public class BoardManager : MonoBehaviour {
-    public class CellData { public bool IsPassable; }
+public class BoardManager : MonoBehaviour
+{
+    public class CellData
+    {
+        public bool IsPassable;
+    }
 
+    // Visual representation of the board.
+    // Unity's Tilemap is used to draw 2D tile-based maps.
     [SerializeField] private Tilemap m_tilemap;
+
+    // It provides the coordinate system and structure
+    // For managing the tilemap and positioning objects.
     [SerializeField] private Grid m_Grid;
 
     [SerializeField] private PlayerController m_PlayerController;
@@ -18,6 +26,11 @@ public class BoardManager : MonoBehaviour {
     [SerializeField] private int width;
     [SerializeField] private int height;
 
+    // Array to store whether each cell in the grid is passable
+    // 2D array containing objects of type CellData
+    // There will be two indices to access it
+    // m_BoardData[0,0] is the first item of the first line,
+    // m_BoardData[1,3] the fourth item of the second line
     private CellData[,] m_boardCellsData;
 
     private void Start()
@@ -27,22 +40,38 @@ public class BoardManager : MonoBehaviour {
 
     private void SetTiles()
     {
+        m_tilemap = GetComponentInChildren<Tilemap>();
+        m_boardCellsData = new CellData[width, height];
+
         for (int y = 0; y < height; ++y)
         {
-            for(int x = 0; x < width; ++x)
+            for (int x = 0; x < width; ++x)
             {
                 Tile tile;
-              
-                if(x == 0 || y == 0 || x == width - 1 || y == height - 1)
+                m_boardCellsData[x, y] = new CellData();
+                var isWallTile = x == 0 || y == 0 || x == width - 1 || y == height - 1;
+
+                // Set the tile as passable if it is a ground tile.
+                // If a wall tile, set passable to false
+                if (isWallTile)
                 {
+                    // Wall tiles
                     tile = wallTiles[Random.Range(0, wallTiles.Length)];
+                    m_boardCellsData[x, y].IsPassable = false;
                 }
                 else
                 {
+                    // Ground tiles
                     tile = groundTiles[Random.Range(0, groundTiles.Length)];
+                    m_boardCellsData[x, y].IsPassable = true;
                 }
-              
+
                 m_tilemap.SetTile(new Vector3Int(x, y, 0), tile);
+
+                // Testing tiles info
+                Debug.Log($"Cell data position: {new Vector2(x, y)}, " +
+                          $"Tile: {tile.name}, " +
+                          $"isPassable: {m_boardCellsData[x, y].IsPassable}");
             }
         }
     }
@@ -128,5 +157,4 @@ public class BoardManager : MonoBehaviour {
     //         cellIndex.y >= height;
     //     }
     // }
-
 }
