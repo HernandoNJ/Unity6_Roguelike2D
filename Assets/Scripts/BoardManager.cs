@@ -75,6 +75,18 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    public CellData GetCellData(Vector2Int cellIndex)
+    {
+        // If cellIndex is out of the grid bounds, return null
+        if (cellIndex.x < 0 || cellIndex.x >= width ||
+            cellIndex.y < 0 || cellIndex.y >= height)
+        {
+            return null;
+        }
+
+        return m_boardCellsData[cellIndex.x, cellIndex.y];
+    }
+
     private void SpawnPlayer()
     {
         m_PlayerController.Spawn(this, new Vector2Int(1, 1));
