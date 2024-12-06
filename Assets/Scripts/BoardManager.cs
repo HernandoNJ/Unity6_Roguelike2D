@@ -35,20 +35,24 @@ public class BoardManager : MonoBehaviour
 
     private void Start()
     {
+        m_tilemap = GetComponentInChildren<Tilemap>();
+        m_Grid = GetComponentInChildren<Grid>();
+        m_boardCellsData = new CellData[width, height];
+
         SetTiles();
+        SpawnPlayer();
     }
 
     private void SetTiles()
     {
-        m_tilemap = GetComponentInChildren<Tilemap>();
-        m_boardCellsData = new CellData[width, height];
-
         for (int y = 0; y < height; ++y)
         {
             for (int x = 0; x < width; ++x)
             {
                 Tile tile;
+
                 m_boardCellsData[x, y] = new CellData();
+
                 var isWallTile = x == 0 || y == 0 || x == width - 1 || y == height - 1;
 
                 // Set the tile as passable if it is a ground tile.
@@ -67,13 +71,24 @@ public class BoardManager : MonoBehaviour
                 }
 
                 m_tilemap.SetTile(new Vector3Int(x, y, 0), tile);
-
-                // Testing tiles info
-                Debug.Log($"Cell data position: {new Vector2(x, y)}, " +
-                          $"Tile: {tile.name}, " +
-                          $"isPassable: {m_boardCellsData[x, y].IsPassable}");
             }
         }
+    }
+
+    private void SpawnPlayer()
+    {
+        m_PlayerController.Spawn(this, new Vector2Int(1, 1));
+    }
+
+    /// <summary>
+    /// Receives a cell index[,] as Vector2Int
+    /// and returns a value to be used as a transform position
+    /// </summary>
+    /// <param name="cellIndex">Vector2Int to be transformed</param>
+    /// <returns>Vector3</returns>
+    public Vector3 CellToWorld(Vector2Int cellIndex)
+    {
+        return m_Grid.GetCellCenterWorld((Vector3Int)cellIndex);
     }
 
     // public void Init()

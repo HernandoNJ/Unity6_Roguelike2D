@@ -1,7 +1,23 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour
+{
+    private BoardManager m_Board;
+    private Vector2Int m_playerCellPosition;
+
+    // newCellPosition is Vector2Int, so it is required
+    // To transform a cell index[,] into Vector3
+    // Using the method GetCellCenterWorld() of a Grid
+    public void Spawn(BoardManager boardManager, Vector2Int newCellPosition)
+    {
+        m_Board = boardManager;
+        m_playerCellPosition = newCellPosition;
+        
+        transform.position = m_Board.CellToWorld(newCellPosition);
+    }
+
+
     // [SerializeField] private BoardManager m_board;
     // [SerializeField] private Vector2Int m_CellPosition; // It stores the current player cell index
     //
