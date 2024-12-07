@@ -119,6 +119,52 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &38034818
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 38034819}
+  - component: {fileID: 38034820}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &38034819
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 38034818}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &38034820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 38034818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07eb05202824c1b4db387bb8996d408a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boardManager: {fileID: 297271816}
+  playerController: {fileID: 1776570871}
 --- !u!1 &297271813
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,7 +225,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_tilemap: {fileID: 2059862833}
   m_Grid: {fileID: 0}
-  m_PlayerController: {fileID: 1776570871}
+  width: 8
+  height: 8
   groundTiles:
   - {fileID: 11400000, guid: 84d51bd062681f94d8a1e7e86fafa8b4, type: 2}
   - {fileID: 11400000, guid: d323359b8b939a048bfa1cc9cad4b1e0, type: 2}
@@ -188,43 +235,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 78b7e37146b8e7c4a92e27d4025c4ee6, type: 2}
   - {fileID: 11400000, guid: 78b7e37146b8e7c4a92e27d4025c4ee6, type: 2}
   - {fileID: 11400000, guid: b85bc73d46c4eb542afe4cade7114794, type: 2}
-  wallTiles:
+  blockingTiles:
   - {fileID: 11400000, guid: 7c224a5ada59209408edd574b5d6d650, type: 2}
   - {fileID: 11400000, guid: e056b82e70d5c7745847ad2adb38c3ec, type: 2}
-  blockingTiles: []
-  width: 8
-  height: 8
---- !u!1 &492934005
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 492934006}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &492934006
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 492934005}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,4 +636,4 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 1776570870}
   - {fileID: 297271815}
-  - {fileID: 492934006}
+  - {fileID: 38034819}
