@@ -165,6 +165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardManager: {fileID: 297271816}
   playerController: {fileID: 1776570871}
+  UIDoc: {fileID: 1423186115}
 --- !u!1 &297271813
 GameObject:
   m_ObjectHideFlags: 0
@@ -685,7 +686,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 519420032}
+  - {fileID: 38034819}
   - {fileID: 1776570870}
   - {fileID: 297271815}
-  - {fileID: 38034819}
   - {fileID: 1423186116}
