@@ -1,8 +1,13 @@
 using UnityEngine;
-public class TurnManager {
+
+public class TurnHandler
+{
     private int m_TurnCount;
 
-    public TurnManager() { m_TurnCount = 1; }
+    public TurnHandler()
+    {
+        m_TurnCount = 1;
+    }
 
     public void Tick()
     {

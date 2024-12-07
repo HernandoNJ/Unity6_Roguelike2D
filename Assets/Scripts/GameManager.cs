@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -5,13 +6,26 @@ public class GameManager : MonoBehaviour
     public BoardManager boardManager;
     public PlayerController playerController;
 
-    private TurnManager m_TurnManager;
+    public static GameManager Instance { get; private set; }
+
+    public TurnHandler TurnHandler { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
 
     private void Start()
     {
-        m_TurnManager = new TurnManager();
-      
+        TurnHandler = new TurnHandler();
+
         boardManager.Init();
-        playerController.Spawn(boardManager, new Vector2Int(1,1));
+        playerController.Spawn(boardManager, new Vector2Int(1, 1));
     }
 }

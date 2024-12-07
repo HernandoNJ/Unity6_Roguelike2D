@@ -38,15 +38,23 @@ public class PlayerController : MonoBehaviour
 
     private void MovePlayer(Vector2Int newCellTarget)
     {
+        //check if the new position is passable, then move there if it is.
         BoardManager.CellData cellData = m_Board.GetCellData(newCellTarget);
+        
         if (cellData != null && cellData.IsPassable)
         {
-            // Update player Vector2Int
-            m_playerCell = newCellTarget;
-
-            // Update player position with the Vector2Int newCellTarget
-            transform.position = m_Board.CellToWorld(newCellTarget);
+            GameManager.Instance.TurnHandler.Tick();
+            MoveTo(newCellTarget);
         }
+    }
+
+    private void MoveTo(Vector2Int newCellTarget)
+    {
+        // Update player Vector2Int
+        m_playerCell = newCellTarget;
+
+        // Update player position with the Vector2Int newCellTarget
+        transform.position = m_Board.CellToWorld(newCellTarget);
     }
 
     // newCell is a Vector2Int, so it is required
