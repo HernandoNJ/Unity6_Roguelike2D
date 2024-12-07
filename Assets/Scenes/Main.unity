@@ -239,6 +239,8 @@ MonoBehaviour:
   blockingTiles:
   - {fileID: 11400000, guid: 7c224a5ada59209408edd574b5d6d650, type: 2}
   - {fileID: 11400000, guid: e056b82e70d5c7745847ad2adb38c3ec, type: 2}
+  foodPrefab: {fileID: 1855746634804226888, guid: 9505bf86c7d393140a2a3e8a91b76588, type: 3}
+  foodInBoardAmount: 5
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

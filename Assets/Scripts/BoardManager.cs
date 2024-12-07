@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
@@ -8,6 +9,7 @@ public class BoardManager : MonoBehaviour
     public class CellData
     {
         public bool IsPassable;
+        public GameObject ContainedObject;
     }
 
     // Array to store whether each cell in the grid is passable
@@ -16,7 +18,7 @@ public class BoardManager : MonoBehaviour
     // m_BoardData[0,0] is the first item of the first line,
     // m_BoardData[1,3] the fourth item of the second line
     private CellData[,] m_boardCellsData;
-    
+
     // Visual representation of the board.
     // Unity's Tilemap is used to draw 2D tile-based maps.
     [SerializeField] private Tilemap m_tilemap;
@@ -27,17 +29,26 @@ public class BoardManager : MonoBehaviour
 
     [SerializeField] private int width;
     [SerializeField] private int height;
-    
+
     [SerializeField] private Tile[] groundTiles;
     [SerializeField] private Tile[] blockingTiles;
+
+    [SerializeField] private GameObject foodPrefab;
+
+    [FormerlySerializedAs("foodInBoardAmount")] [SerializeField]
+    private int foodInBoardCount = 5;
+
+    [SerializeField] private List<Vector2Int> m_EmptyCellsList;
 
     public void Init()
     {
         m_tilemap = GetComponentInChildren<Tilemap>();
         m_Grid = GetComponentInChildren<Grid>();
+        m_EmptyCellsList = new List<Vector2Int>();
         m_boardCellsData = new CellData[width, height];
 
         SetTiles();
+        GenerateFood();
     }
 
     private void SetTiles()
@@ -65,11 +76,17 @@ public class BoardManager : MonoBehaviour
                     // Ground tiles
                     tile = groundTiles[Random.Range(0, groundTiles.Length)];
                     m_boardCellsData[x, y].IsPassable = true;
+
+                    // Passable & empty cell, add it to the list!
+                    m_EmptyCellsList.Add(new Vector2Int(x, y));
                 }
 
                 m_tilemap.SetTile(new Vector3Int(x, y, 0), tile);
             }
         }
+
+        // Remove the starting point of the player
+        m_EmptyCellsList.Remove(new Vector2Int(1, 1));
     }
 
     /// <summary>
@@ -78,7 +95,7 @@ public class BoardManager : MonoBehaviour
     /// </summary>
     /// <param name="cellIndex">Vector2Int to be transformed</param>
     /// <returns>Vector3</returns>
-    public Vector3 CellToWorld(Vector2Int cellIndex)
+    public Vector3 SetCellToWorld(Vector2Int cellIndex)
     {
         return m_Grid.GetCellCenterWorld((Vector3Int)cellIndex);
     }
@@ -93,5 +110,22 @@ public class BoardManager : MonoBehaviour
         }
 
         return m_boardCellsData[cellIndex.x, cellIndex.y];
+    }
+
+    private void GenerateFood()
+    {
+        for (int i = 0; i < foodInBoardCount; ++i)
+        {
+            var randomIndex = Random.Range(0, m_EmptyCellsList.Count);
+            var cellCoord = m_EmptyCellsList[randomIndex];
+            m_EmptyCellsList.RemoveAt(randomIndex);
+
+            var data = m_boardCellsData[cellCoord.x, cellCoord.y];
+
+            // Add food to the cell
+            var newFood = Instantiate(foodPrefab);
+            newFood.transform.position = SetCellToWorld(cellCoord);
+            data.ContainedObject = newFood;
+        }
     }
 }

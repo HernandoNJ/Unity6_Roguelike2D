@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour
         m_playerCell = newCellTarget;
 
         // Update player position with the Vector2Int newCellTarget
-        transform.position = m_Board.CellToWorld(newCellTarget);
+        transform.position = m_Board.SetCellToWorld(newCellTarget);
     }
 
     // newCell is a Vector2Int, so it is required
@@ -65,6 +65,6 @@ public class PlayerController : MonoBehaviour
         m_Board = boardManager;
         m_playerCell = newCell;
 
-        transform.position = m_Board.CellToWorld(newCell);
+        transform.position = m_Board.SetCellToWorld(newCell);
     }
 }
