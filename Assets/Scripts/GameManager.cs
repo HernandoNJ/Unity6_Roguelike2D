@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public BoardManager boardManager;
     public PlayerController playerController;
+    public Vector2Int initPlayerPosition;
 
     public UIDocument UIDoc;
     private Label m_FoodLabel;
@@ -39,7 +40,7 @@ public class GameManager : MonoBehaviour
         TurnHandler.OnTick += OnTickHandler;
 
         boardManager.Init();
-        playerController.Spawn(boardManager, new Vector2Int(1, 1));
+        playerController.Spawn(boardManager, initPlayerPosition);
     }
 
     // OnTurnHappen

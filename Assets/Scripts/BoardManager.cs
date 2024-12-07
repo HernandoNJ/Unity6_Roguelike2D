@@ -33,15 +33,18 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private Tile[] groundTiles;
     [SerializeField] private Tile[] blockingTiles;
 
-    [SerializeField] private GameObject foodPrefab;
+    [SerializeField] private GameObject[] foodPrefabArray;
 
-    [FormerlySerializedAs("foodInBoardAmount")] [SerializeField]
-    private int foodInBoardCount = 5;
+    [SerializeField] private int minFoodCount;
+    [SerializeField] private int maxFoodCount;
+    [SerializeField] private int initFoodCount;
 
     [SerializeField] private List<Vector2Int> m_EmptyCellsList;
 
     public void Init()
     {
+        initFoodCount = GetNewRandomInt(minFoodCount, maxFoodCount + 1);
+        
         m_tilemap = GetComponentInChildren<Tilemap>();
         m_Grid = GetComponentInChildren<Grid>();
         m_EmptyCellsList = new List<Vector2Int>();
@@ -50,6 +53,7 @@ public class BoardManager : MonoBehaviour
         SetTiles();
         GenerateFood();
     }
+
 
     private void SetTiles()
     {
@@ -86,7 +90,8 @@ public class BoardManager : MonoBehaviour
         }
 
         // Remove the starting point of the player
-        m_EmptyCellsList.Remove(new Vector2Int(1, 1));
+        var playerCell = GameManager.Instance.initPlayerPosition;
+        m_EmptyCellsList.Remove(playerCell);
     }
 
     /// <summary>
@@ -114,18 +119,23 @@ public class BoardManager : MonoBehaviour
 
     private void GenerateFood()
     {
-        for (int i = 0; i < foodInBoardCount; ++i)
+        for (int i = 0; i < initFoodCount; ++i)
         {
-            var randomIndex = Random.Range(0, m_EmptyCellsList.Count);
-            var cellCoord = m_EmptyCellsList[randomIndex];
-            m_EmptyCellsList.RemoveAt(randomIndex);
-
+            var randomCellsIndex = Random.Range(0, m_EmptyCellsList.Count);
+            var randomFoodIndex = GetNewRandomInt(0,foodPrefabArray.Length);
+            
+            var cellCoord = m_EmptyCellsList[randomCellsIndex];
+            m_EmptyCellsList.RemoveAt(randomCellsIndex);
+            
             var data = m_boardCellsData[cellCoord.x, cellCoord.y];
-
-            // Add food to the cell
-            var newFood = Instantiate(foodPrefab);
+            
+            // Add food to the new cell
+            var newFood = Instantiate(foodPrefabArray[randomFoodIndex]);
             newFood.transform.position = SetCellToWorld(cellCoord);
             data.ContainedObject = newFood;
         }
     }
+    
+    // Random including min value, excluding max value
+    private int GetNewRandomInt(int min, int max) => Random.Range(min, max);
 }

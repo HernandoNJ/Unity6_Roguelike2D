@@ -1,11 +1,10 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    private BoardManager m_Board;
-    private Vector2Int m_playerCell;
+    [SerializeField] private BoardManager m_Board;
+    [SerializeField] private Vector2Int m_playerCell;
 
     private void Update()
     {
@@ -36,15 +35,15 @@ public class PlayerController : MonoBehaviour
         if (hasMoved) MovePlayer(newCellTarget);
     }
 
-    private void MovePlayer(Vector2Int newCellTarget)
+    private void MovePlayer(Vector2Int newCellVector)
     {
         //check if the new position is passable, then move there if it is.
-        BoardManager.CellData cellData = m_Board.GetCellData(newCellTarget);
+        BoardManager.CellData cellData = m_Board.GetCellData(newCellVector);
         
         if (cellData != null && cellData.IsPassable)
         {
             GameManager.Instance.TurnHandler.Tick();
-            MoveTo(newCellTarget);
+            MoveTo(newCellVector);
         }
     }
 

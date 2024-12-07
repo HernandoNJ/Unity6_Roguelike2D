@@ -165,6 +165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardManager: {fileID: 297271816}
   playerController: {fileID: 1776570871}
+  initPlayerPosition: {x: 1, y: 1}
   UIDoc: {fileID: 1423186115}
 --- !u!1 &297271813
 GameObject:
@@ -239,8 +240,17 @@ MonoBehaviour:
   blockingTiles:
   - {fileID: 11400000, guid: 7c224a5ada59209408edd574b5d6d650, type: 2}
   - {fileID: 11400000, guid: e056b82e70d5c7745847ad2adb38c3ec, type: 2}
-  foodPrefab: {fileID: 1855746634804226888, guid: 9505bf86c7d393140a2a3e8a91b76588, type: 3}
-  foodInBoardAmount: 5
+  foodPrefabArray:
+  - {fileID: 1855746634804226888, guid: 9505bf86c7d393140a2a3e8a91b76588, type: 3}
+  - {fileID: 1975949685841631889, guid: 18428cef275dccd428a28b549dd95be9, type: 3}
+  - {fileID: 6509631400226944346, guid: 0f4792f8696d23843be9e0005730a682, type: 3}
+  - {fileID: 221666625041711848, guid: 3b6c12159c8922e4e9ee5f4238c6144d, type: 3}
+  - {fileID: 6147260306614197804, guid: 6305a0864d6feab43ac3d81a1469b58b, type: 3}
+  - {fileID: 7954878692302128047, guid: badd204cf03419a49957b5244924686d, type: 3}
+  minFoodCount: 2
+  maxFoodCount: 6
+  initFoodCount: 0
+  m_EmptyCellsList: []
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -530,6 +540,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53198deb247d68f4a88dea53fc78dd14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Board: {fileID: 0}
+  m_playerCell: {x: 2, y: 2}
 --- !u!114 &1776570872
 MonoBehaviour:
   m_ObjectHideFlags: 0
