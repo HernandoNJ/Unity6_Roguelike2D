@@ -44,6 +44,11 @@ public class PlayerController : MonoBehaviour
         {
             GameManager.Instance.TurnHandler.Tick();
             MoveTo(newCellVector);
+            
+            if (cellData.ContainedObject != null)
+            {
+                cellData.ContainedObject.PlayerEntered();
+            }
         }
     }
 

@@ -9,7 +9,7 @@ public class BoardManager : MonoBehaviour
     public class CellData
     {
         public bool IsPassable;
-        public GameObject ContainedObject;
+        public CellObject ContainedObject;
     }
 
     // Array to store whether each cell in the grid is passable
@@ -43,17 +43,19 @@ public class BoardManager : MonoBehaviour
 
     public void Init()
     {
-        initFoodCount = GetNewRandomInt(minFoodCount, maxFoodCount + 1);
-        
-        m_tilemap = GetComponentInChildren<Tilemap>();
-        m_Grid = GetComponentInChildren<Grid>();
-        m_EmptyCellsList = new List<Vector2Int>();
-        m_boardCellsData = new CellData[width, height];
-
+        SetInitialValues();
         SetTiles();
         GenerateFood();
     }
 
+    private void SetInitialValues()
+    {
+        initFoodCount = Utils.GetNewRandomInt(minFoodCount, maxFoodCount + 1);
+        m_tilemap = GetComponentInChildren<Tilemap>();
+        m_Grid = GetComponentInChildren<Grid>();
+        m_EmptyCellsList = new List<Vector2Int>();
+        m_boardCellsData = new CellData[width, height];
+    }
 
     private void SetTiles()
     {
@@ -121,21 +123,18 @@ public class BoardManager : MonoBehaviour
     {
         for (int i = 0; i < initFoodCount; ++i)
         {
-            var randomCellsIndex = Random.Range(0, m_EmptyCellsList.Count);
-            var randomFoodIndex = GetNewRandomInt(0,foodPrefabArray.Length);
-            
+            var randomCellsIndex = Utils.GetNewRandomInt(0, m_EmptyCellsList.Count);
             var cellCoord = m_EmptyCellsList[randomCellsIndex];
             m_EmptyCellsList.RemoveAt(randomCellsIndex);
-            
-            var data = m_boardCellsData[cellCoord.x, cellCoord.y];
-            
+
             // Add food to the new cell
-            var newFood = Instantiate(foodPrefabArray[randomFoodIndex]);
+            var data = m_boardCellsData[cellCoord.x, cellCoord.y];
+            var randomFoodIndex = Utils.GetNewRandomInt(0, foodPrefabArray.Length);
+            var obj = Instantiate(foodPrefabArray[randomFoodIndex]);
+            
+            var newFood = obj.GetComponent<FoodObject>();
             newFood.transform.position = SetCellToWorld(cellCoord);
             data.ContainedObject = newFood;
         }
     }
-    
-    // Random including min value, excluding max value
-    private int GetNewRandomInt(int min, int max) => Random.Range(min, max);
 }
