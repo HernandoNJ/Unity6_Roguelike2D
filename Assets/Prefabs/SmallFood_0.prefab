@@ -100,4 +100,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3265077d0bcbc9a4d968d4babc9109ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  foodPoints: 2
+  foodPoints: 10
