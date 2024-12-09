@@ -1,15 +1,13 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class FoodObject : CellObject
 {
+    [SerializeField] private int foodPoints;
+    
     public override void PlayerEntered()
     {
         Destroy(gameObject);
-      
-        //increase food
-        Debug.Log("Food increased");
-        Debug.Log($"Gameobject name: {gameObject.name}");
-        Debug.Log($"****************");
-        base.PlayerEntered();
+        GameManager.Instance.UpdateFoodAmount(foodPoints);
     }
 }
