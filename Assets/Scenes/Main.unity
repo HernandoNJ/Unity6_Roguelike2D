@@ -167,6 +167,7 @@ MonoBehaviour:
   playerController: {fileID: 1776570871}
   initPlayerPosition: {x: 1, y: 1}
   m_CurrentLevel: 0
+  m_FoodAmount: 10
   UIDoc: {fileID: 1423186115}
 --- !u!1 &297271813
 GameObject:
