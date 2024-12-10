@@ -33,11 +33,13 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private Tile[] groundTiles;
     [SerializeField] private Tile[] blockingTiles;
 
-    [SerializeField] private GameObject[] foodPrefabArray;
+    [SerializeField] private FoodObject[] foodPrefabsArray;
+    [SerializeField] private WallObject wallPrefab;
 
     [SerializeField] private int minFoodCount;
     [SerializeField] private int maxFoodCount;
     [SerializeField] private int initFoodCount;
+    [SerializeField] private int initwallCount;
 
     [SerializeField] private List<Vector2Int> m_EmptyCellsList;
 
@@ -45,12 +47,15 @@ public class BoardManager : MonoBehaviour
     {
         SetInitialValues();
         SetTiles();
+        GenerateWallObstacles();
         GenerateFood();
     }
 
     private void SetInitialValues()
     {
         initFoodCount = Utils.GetNewRandomInt(minFoodCount, maxFoodCount + 1);
+        initwallCount = Utils.GetNewRandomInt(6, 10);
+
         m_tilemap = GetComponentInChildren<Tilemap>();
         m_Grid = GetComponentInChildren<Grid>();
         m_EmptyCellsList = new List<Vector2Int>();
@@ -107,6 +112,11 @@ public class BoardManager : MonoBehaviour
         return m_Grid.GetCellCenterWorld((Vector3Int)cellIndex);
     }
 
+    public void SetCelltile(Vector2Int cellIndex, Tile tile)
+    {
+        m_tilemap.SetTile(new Vector3Int(cellIndex.x, cellIndex.y, 0), tile);
+    }
+
     public CellData GetCellData(Vector2Int cellIndex)
     {
         // If cellIndex is out of the grid bounds, return null
@@ -119,22 +129,46 @@ public class BoardManager : MonoBehaviour
         return m_boardCellsData[cellIndex.x, cellIndex.y];
     }
 
+    private void GenerateCellObjects<T>(
+        int count,
+        T[] prefabArray,
+        T singlePrefab)
+        where T : CellObject
+    {
+        for (int i = 0; i < count; i++)
+        {
+            int randomIndex = Utils.GetNewRandomInt(0, m_EmptyCellsList.Count);
+            var cellCoord = m_EmptyCellsList[randomIndex];
+            m_EmptyCellsList.RemoveAt(randomIndex);
+            
+            var data = m_boardCellsData[cellCoord.x, cellCoord.y];
+
+            T newPrefab;
+            
+            if(singlePrefab != null) newPrefab = singlePrefab;
+            else
+            {
+                var randomArrayIndex = Utils.GetNewRandomInt(0, prefabArray.Length);
+                newPrefab = prefabArray[randomArrayIndex];
+            }
+
+            // Instantiate and place the object
+            var obj = Instantiate(newPrefab);
+            obj.Init(cellCoord);
+            obj.transform.position = SetCellToWorld(cellCoord);
+
+            // Update cell data
+            data.ContainedObject = obj.GetComponent<T>();
+        }
+    }
+
     private void GenerateFood()
     {
-        for (int i = 0; i < initFoodCount; ++i)
-        {
-            var randomCellsIndex = Utils.GetNewRandomInt(0, m_EmptyCellsList.Count);
-            var cellCoord = m_EmptyCellsList[randomCellsIndex];
-            m_EmptyCellsList.RemoveAt(randomCellsIndex);
+        GenerateCellObjects(initFoodCount, foodPrefabsArray, null);
+    }
 
-            // Add food to the new cell
-            var data = m_boardCellsData[cellCoord.x, cellCoord.y];
-            var randomFoodIndex = Utils.GetNewRandomInt(0, foodPrefabArray.Length);
-            var obj = Instantiate(foodPrefabArray[randomFoodIndex]);
-            
-            var newFood = obj.GetComponent<FoodObject>();
-            newFood.transform.position = SetCellToWorld(cellCoord);
-            data.ContainedObject = newFood;
-        }
+    private void GenerateWallObstacles()
+    {
+        GenerateCellObjects(initwallCount, null, wallPrefab);
     }
 }

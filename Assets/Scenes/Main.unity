@@ -240,16 +240,18 @@ MonoBehaviour:
   blockingTiles:
   - {fileID: 11400000, guid: 7c224a5ada59209408edd574b5d6d650, type: 2}
   - {fileID: 11400000, guid: e056b82e70d5c7745847ad2adb38c3ec, type: 2}
-  foodPrefabArray:
-  - {fileID: 1855746634804226888, guid: 9505bf86c7d393140a2a3e8a91b76588, type: 3}
-  - {fileID: 1975949685841631889, guid: 18428cef275dccd428a28b549dd95be9, type: 3}
-  - {fileID: 6509631400226944346, guid: 0f4792f8696d23843be9e0005730a682, type: 3}
-  - {fileID: 221666625041711848, guid: 3b6c12159c8922e4e9ee5f4238c6144d, type: 3}
-  - {fileID: 6147260306614197804, guid: 6305a0864d6feab43ac3d81a1469b58b, type: 3}
-  - {fileID: 7954878692302128047, guid: badd204cf03419a49957b5244924686d, type: 3}
+  foodPrefabsArray:
+  - {fileID: -3826370394490621999, guid: 9505bf86c7d393140a2a3e8a91b76588, type: 3}
+  - {fileID: -3310408963254196875, guid: 18428cef275dccd428a28b549dd95be9, type: 3}
+  - {fileID: 205072015989199881, guid: 0f4792f8696d23843be9e0005730a682, type: 3}
+  - {fileID: 8559550335765513701, guid: 3b6c12159c8922e4e9ee5f4238c6144d, type: 3}
+  - {fileID: -7957700283022214737, guid: 6305a0864d6feab43ac3d81a1469b58b, type: 3}
+  - {fileID: 2387871780141160395, guid: badd204cf03419a49957b5244924686d, type: 3}
+  wallPrefab: {fileID: 9094084193071988686, guid: 97c39b21e3371df46b27b5d1ddd471be, type: 3}
   minFoodCount: 2
   maxFoodCount: 6
   initFoodCount: 0
+  initwallCount: 0
   m_EmptyCellsList: []
 --- !u!1 &519420028
 GameObject:
