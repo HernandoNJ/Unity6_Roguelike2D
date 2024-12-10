@@ -34,7 +34,8 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private Tile[] blockingTiles;
 
     [SerializeField] private FoodObject[] foodPrefabsArray;
-    [SerializeField] private WallObject wallPrefab;
+    [SerializeField] private WallObject wallCellPrefab;
+    [SerializeField] private ExitCellObject exitCellPrefab;
 
     [SerializeField] private int minFoodCount;
     [SerializeField] private int maxFoodCount;
@@ -47,8 +48,17 @@ public class BoardManager : MonoBehaviour
     {
         SetInitialValues();
         SetTiles();
+        
+        GenerateExit();
         GenerateWallObstacles();
         GenerateFood();
+    }
+
+    private void GenerateExit()
+    {
+        var exitCoord = new Vector2Int(width - 2, height - 2);
+        AddCellObject(Instantiate(exitCellPrefab), exitCoord);
+        m_EmptyCellsList.Remove(exitCoord);
     }
 
     private void SetInitialValues()
@@ -182,6 +192,6 @@ public class BoardManager : MonoBehaviour
 
     private void GenerateWallObstacles()
     {
-        GenerateCellObjects(initwallCount, null, wallPrefab);
+        GenerateCellObjects(initwallCount, null, wallCellPrefab);
     }
 }

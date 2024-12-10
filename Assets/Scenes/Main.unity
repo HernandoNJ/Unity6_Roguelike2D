@@ -247,7 +247,8 @@ MonoBehaviour:
   - {fileID: 8559550335765513701, guid: 3b6c12159c8922e4e9ee5f4238c6144d, type: 3}
   - {fileID: -7957700283022214737, guid: 6305a0864d6feab43ac3d81a1469b58b, type: 3}
   - {fileID: 2387871780141160395, guid: badd204cf03419a49957b5244924686d, type: 3}
-  wallPrefab: {fileID: 9094084193071988686, guid: 97c39b21e3371df46b27b5d1ddd471be, type: 3}
+  wallCellPrefab: {fileID: 9094084193071988686, guid: 97c39b21e3371df46b27b5d1ddd471be, type: 3}
+  exitCellPrefab: {fileID: 7877444553967912497, guid: bbb4ee9290a230a46bcc87854acc9a02, type: 3}
   minFoodCount: 2
   maxFoodCount: 6
   initFoodCount: 0
