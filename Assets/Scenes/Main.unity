@@ -166,6 +166,7 @@ MonoBehaviour:
   boardManager: {fileID: 297271816}
   playerController: {fileID: 1776570871}
   initPlayerPosition: {x: 1, y: 1}
+  m_CurrentLevel: 0
   UIDoc: {fileID: 1423186115}
 --- !u!1 &297271813
 GameObject:
@@ -229,6 +230,8 @@ MonoBehaviour:
   m_Grid: {fileID: 0}
   width: 8
   height: 8
+  xExitCoord: 0
+  yExitCoord: 0
   groundTiles:
   - {fileID: 11400000, guid: 84d51bd062681f94d8a1e7e86fafa8b4, type: 2}
   - {fileID: 11400000, guid: d323359b8b939a048bfa1cc9cad4b1e0, type: 2}
@@ -250,9 +253,11 @@ MonoBehaviour:
   wallCellPrefab: {fileID: 9094084193071988686, guid: 97c39b21e3371df46b27b5d1ddd471be, type: 3}
   exitCellPrefab: {fileID: 7877444553967912497, guid: bbb4ee9290a230a46bcc87854acc9a02, type: 3}
   minFoodCount: 2
-  maxFoodCount: 6
+  maxFoodCount: 5
+  minObstCount: 1
+  maxObstCount: 5
   initFoodCount: 0
-  initwallCount: 0
+  initObstCount: 0
   m_EmptyCellsList: []
 --- !u!1 &519420028
 GameObject:

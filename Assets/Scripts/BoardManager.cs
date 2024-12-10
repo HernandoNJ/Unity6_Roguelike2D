@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -29,6 +30,8 @@ public class BoardManager : MonoBehaviour
 
     [SerializeField] private int width;
     [SerializeField] private int height;
+    [SerializeField] private int xExitCoord;
+    [SerializeField] private int yExitCoord;
 
     [SerializeField] private Tile[] groundTiles;
     [SerializeField] private Tile[] blockingTiles;
@@ -37,43 +40,43 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private WallObject wallCellPrefab;
     [SerializeField] private ExitCellObject exitCellPrefab;
 
-    [SerializeField] private int minFoodCount;
-    [SerializeField] private int maxFoodCount;
+    [SerializeField] private int minFoodCount = 2;
+    [SerializeField] private int maxFoodCount = 5;
+    [SerializeField] private int minObstCount = 1;
+    [SerializeField] private int maxObstCount = 5;
     [SerializeField] private int initFoodCount;
-    [SerializeField] private int initwallCount;
+    [SerializeField] private int initObstCount;
 
     [SerializeField] private List<Vector2Int> m_EmptyCellsList;
+
+    private void OnEnable()
+    {
+        m_tilemap = GetComponentInChildren<Tilemap>();
+        m_Grid = GetComponentInChildren<Grid>();
+    }
 
     public void Init()
     {
         SetInitialValues();
         SetTiles();
-        
         GenerateExit();
         GenerateWallObstacles();
         GenerateFood();
     }
 
-    private void GenerateExit()
-    {
-        var exitCoord = new Vector2Int(width - 2, height - 2);
-        AddCellObject(Instantiate(exitCellPrefab), exitCoord);
-        m_EmptyCellsList.Remove(exitCoord);
-    }
-
     private void SetInitialValues()
     {
-        initFoodCount = Utils.GetNewRandomInt(minFoodCount, maxFoodCount + 1);
-        initwallCount = Utils.GetNewRandomInt(6, 10);
+        initFoodCount = Utils.GetNewRandomInt(minFoodCount, maxFoodCount);
+        initObstCount = Utils.GetNewRandomInt(minObstCount, maxObstCount);
 
-        m_tilemap = GetComponentInChildren<Tilemap>();
-        m_Grid = GetComponentInChildren<Grid>();
-        m_EmptyCellsList = new List<Vector2Int>();
-        m_boardCellsData = new CellData[width, height];
+        xExitCoord = width - 2;
+        yExitCoord = height - 2;
     }
 
     private void SetTiles()
     {
+        m_boardCellsData = new CellData[width, height];
+
         for (int y = 0; y < height; ++y)
         {
             for (int x = 0; x < width; ++x)
@@ -109,6 +112,23 @@ public class BoardManager : MonoBehaviour
         // Remove the starting point of the player
         var playerCell = GameManager.Instance.initPlayerPosition;
         m_EmptyCellsList.Remove(playerCell);
+    }
+
+    private void GenerateExit()
+    {
+        var exitCoord = new Vector2Int(xExitCoord, yExitCoord);
+        AddCellObject(Instantiate(exitCellPrefab), exitCoord);
+        m_EmptyCellsList.Remove(exitCoord);
+    }
+
+    private void GenerateWallObstacles()
+    {
+        GenerateCellObjects(initObstCount, null, wallCellPrefab);
+    }
+
+    private void GenerateFood()
+    {
+        GenerateCellObjects(initFoodCount, foodPrefabsArray, null);
     }
 
     /// <summary>
@@ -185,13 +205,24 @@ public class BoardManager : MonoBehaviour
         cellObj.Init(coord);
     }
 
-    private void GenerateFood()
+    public void CleanBoard()
     {
-        GenerateCellObjects(initFoodCount, foodPrefabsArray, null);
-    }
+        if (m_boardCellsData == null) return;
 
-    private void GenerateWallObstacles()
-    {
-        GenerateCellObjects(initwallCount, null, wallCellPrefab);
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                var cellData = m_boardCellsData[x, y];
+
+                if (cellData.ContainedObject != null)
+                {
+                    Destroy(cellData.ContainedObject.gameObject);
+                }
+            }
+        }
+
+        m_tilemap.ClearAllTiles();
+        m_EmptyCellsList.Clear();
     }
 }
