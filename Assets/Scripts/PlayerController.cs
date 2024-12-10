@@ -5,8 +5,29 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private BoardManager m_Board;
     [SerializeField] private Vector2Int m_playerCell;
+    [SerializeField] private bool m_IsGameOver;
 
+    public void Init()
+    {
+        m_IsGameOver = false;
+    }
+    
     private void Update()
+    {
+        if (m_IsGameOver)
+        {
+            if (Keyboard.current.enterKey.wasPressedThisFrame)
+            {
+                GameManager.Instance.StartNewGame();
+                
+            }
+            return;
+        }
+        
+        CheckPlayerInput();
+    }
+
+    private void CheckPlayerInput()
     {
         var newCellTarget = m_playerCell;
         var arrowKeyPressed = false;
@@ -82,4 +103,6 @@ public class PlayerController : MonoBehaviour
 
         transform.position = m_Board.SetCellToWorld(newCell);
     }
+
+    public void SetGameOver() => m_IsGameOver = true;
 }
