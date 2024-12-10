@@ -112,7 +112,12 @@ public class BoardManager : MonoBehaviour
         return m_Grid.GetCellCenterWorld((Vector3Int)cellIndex);
     }
 
-    public void SetCelltile(Vector2Int cellIndex, Tile tile)
+    public Tile GetCellTile(Vector2Int cellIndex)
+    {
+        return m_tilemap.GetTile<Tile>(new Vector3Int(cellIndex.x, cellIndex.y, 0));
+    }
+
+    public void SetCellTile(Vector2Int cellIndex, Tile tile)
     {
         m_tilemap.SetTile(new Vector3Int(cellIndex.x, cellIndex.y, 0), tile);
     }
@@ -140,12 +145,12 @@ public class BoardManager : MonoBehaviour
             int randomIndex = Utils.GetNewRandomInt(0, m_EmptyCellsList.Count);
             var cellCoord = m_EmptyCellsList[randomIndex];
             m_EmptyCellsList.RemoveAt(randomIndex);
-            
-            var data = m_boardCellsData[cellCoord.x, cellCoord.y];
 
+            // As T is of type CellObject
+            // prefabArray and singlePrefab must be of type CellObject
             T newPrefab;
-            
-            if(singlePrefab != null) newPrefab = singlePrefab;
+
+            if (singlePrefab != null) newPrefab = singlePrefab;
             else
             {
                 var randomArrayIndex = Utils.GetNewRandomInt(0, prefabArray.Length);
@@ -153,13 +158,21 @@ public class BoardManager : MonoBehaviour
             }
 
             // Instantiate and place the object
-            var obj = Instantiate(newPrefab);
-            obj.Init(cellCoord);
-            obj.transform.position = SetCellToWorld(cellCoord);
+            var tObj = Instantiate(newPrefab);
 
-            // Update cell data
-            data.ContainedObject = obj.GetComponent<T>();
+            AddCellObject(tObj, cellCoord);
         }
+    }
+
+    private void AddCellObject<T>(
+        T cellObj,
+        Vector2Int coord)
+        where T : CellObject
+    {
+        var data = m_boardCellsData[coord.x, coord.y];
+        cellObj.transform.position = SetCellToWorld(coord);
+        data.ContainedObject = cellObj;
+        cellObj.Init(coord);
     }
 
     private void GenerateFood()

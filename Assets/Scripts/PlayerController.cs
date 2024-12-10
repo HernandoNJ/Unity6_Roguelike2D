@@ -8,38 +8,39 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        Vector2Int newCellTarget = m_playerCell;
-        var hasMoved = false;
+        var newCellTarget = m_playerCell;
+        var arrowKeyPressed = false;
         
         if (Keyboard.current.upArrowKey.wasPressedThisFrame)
         {
             newCellTarget.y += 1;
-            hasMoved = true;
+            arrowKeyPressed = true;
         }
         else if (Keyboard.current.downArrowKey.wasPressedThisFrame)
         {
             newCellTarget.y -= 1;
-            hasMoved = true;
+            arrowKeyPressed = true;
         }
         else if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
         {
             newCellTarget.x -= 1;
-            hasMoved = true;
+            arrowKeyPressed = true;
         }
         else if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
         {
             newCellTarget.x += 1;
-            hasMoved = true;
+            arrowKeyPressed = true;
         }
 
-        if (hasMoved) MovePlayer(newCellTarget);
+        if (arrowKeyPressed) MovePlayer(newCellTarget);
     }
 
     private void MovePlayer(Vector2Int newCellVector)
     {
-        //check if the new position is passable, then move there if it is.
-        BoardManager.CellData cellData = m_Board.GetCellData(newCellVector);
+        // Get CellData at newCellVector 
+        var cellData = m_Board.GetCellData(newCellVector);
         
+        // Check if the new position is passable, then move there if it is.
         // If cell is not passable, tick is not counted
         if (cellData != null && cellData.IsPassable)
         {
