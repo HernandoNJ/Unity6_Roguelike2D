@@ -40,13 +40,23 @@ public class PlayerController : MonoBehaviour
         //check if the new position is passable, then move there if it is.
         BoardManager.CellData cellData = m_Board.GetCellData(newCellVector);
         
+        // If cell is not passable, tick is not counted
         if (cellData != null && cellData.IsPassable)
         {
+            // Tick once, including bumping into an object
             GameManager.Instance.TurnHandler.Tick();
-            MoveTo(newCellVector);
             
-            if (cellData.ContainedObject != null)
+            // CellData doesn't contain an object, move the player
+            if (cellData.ContainedObject == null)
             {
+                MoveTo(newCellVector);
+            }
+            else if (cellData.ContainedObject.PlayerWantsToEnter())
+            {
+                MoveTo(newCellVector);
+                
+                // Call PlayerEntered AFTER moving the player!
+                // Otherwise, not in cell yet
                 cellData.ContainedObject.PlayerEntered();
             }
         }
