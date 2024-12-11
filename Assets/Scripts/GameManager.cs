@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public BoardManager boardManager;
     public PlayerController playerController;
-    public Vector2Int initPlayerPosition;
+    public Vector2Int initPlayerCell;
     public int m_CurrentLevel = 1;
     public int m_CurrentFood = 0;
     public int m_InitFood = 20;
@@ -58,8 +58,9 @@ public class GameManager : MonoBehaviour
             m_GameOverPanel == null ||
             m_GameOverMessage == null)
         {
-            Debug.LogError($"Reference missing in /* {nameof(CheckReferences)}() */  " +
-                           $"of  /* {GetType().Name} */ script");
+            Debug.LogError(
+                $"Reference missing in /* {nameof(CheckReferences)}() */  " +
+                $"of  /* {GetType().Name} */ script");
         }
     }
 
@@ -76,14 +77,14 @@ public class GameManager : MonoBehaviour
         // Reset board and player
         InitializeBoard();
         playerController.Init();
-        playerController.Spawn(boardManager, initPlayerPosition);
+        playerController.Spawn(boardManager, initPlayerCell);
     }
 
     public void StartNewLevel()
     {
         // Initialize the board and player for the new level
         InitializeBoard();
-        playerController.Spawn(boardManager, initPlayerPosition);
+        playerController.Spawn(boardManager, initPlayerCell);
 
         m_CurrentLevel++;
     }

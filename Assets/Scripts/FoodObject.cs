@@ -6,7 +6,10 @@ public class FoodObject : CellObject
     
     public override void PlayerEntered()
     {
+        Debug.Log("Player entered food object");
         Destroy(gameObject);
         GameManager.Instance.UpdateFood(foodPoints);
     }
+
+    public override int ShowPoints() => foodPoints;
 }

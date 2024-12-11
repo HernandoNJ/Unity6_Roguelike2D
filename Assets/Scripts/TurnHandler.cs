@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class TurnHandler
@@ -5,12 +6,7 @@ public class TurnHandler
     private int m_TurnCount;
     
     // Only the class declaring the OnTick event can trigger it
-    public event System.Action OnTick;
-
-    public TurnHandler()
-    {
-        m_TurnCount = 1;
-    }
+    public event Action OnTick;
 
     public void Tick()
     {

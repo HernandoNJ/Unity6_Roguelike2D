@@ -24,11 +24,18 @@ public class WallObject : CellObject
     {
         m_HealthPoints -= 1;
 
-        if (m_HealthPoints > 0) return false;
+        if (m_HealthPoints > 0)
+        {
+            Debug.Log("pwe is false");
+            return false;
+        }
 
         // if m_HealthPoints = 0
         m_BoardManager.SetCellTile(m_CellVector, m_OriginalTile);
         Destroy(gameObject);
+        Debug.Log("pwe is true");
         return true;
     }
+
+    public override int ShowPoints() => m_HealthPoints;
 }

@@ -110,7 +110,7 @@ public class BoardManager : MonoBehaviour
         }
 
         // Remove the starting point of the player
-        var playerCell = GameManager.Instance.initPlayerPosition;
+        var playerCell = GameManager.Instance.initPlayerCell;
         m_EmptyCellsList.Remove(playerCell);
     }
 

@@ -18,4 +18,7 @@ public class CellObject : MonoBehaviour
     public virtual void PlayerEntered() { }
     
     public virtual bool PlayerWantsToEnter() => true;
+
+    public virtual int ShowPoints() => 0;
+
 }
