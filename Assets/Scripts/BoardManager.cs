@@ -38,14 +38,18 @@ public class BoardManager : MonoBehaviour
 
     [SerializeField] private FoodObject[] foodPrefabsArray;
     [SerializeField] private WallObject wallCellPrefab;
+    [SerializeField] private EnemyCellObject enemyCellObjPrefab;
     [SerializeField] private ExitCellObject exitCellPrefab;
 
     [SerializeField] private int minFoodCount = 2;
     [SerializeField] private int maxFoodCount = 5;
     [SerializeField] private int minObstCount = 1;
     [SerializeField] private int maxObstCount = 5;
+    [SerializeField] private int minEnemiesCount = 1;
+    [SerializeField] private int maxEnemiesCount = 5;
     [SerializeField] private int initFoodCount;
     [SerializeField] private int initObstCount;
+    [SerializeField] private int initEnemiesCount;
 
     [SerializeField] private List<Vector2Int> m_EmptyCellsList;
 
@@ -62,12 +66,14 @@ public class BoardManager : MonoBehaviour
         GenerateExit();
         GenerateWallObstacles();
         GenerateFood();
+        GenerateEnemies();
     }
 
     private void SetInitialValues()
     {
         initFoodCount = Utils.GetNewRandomInt(minFoodCount, maxFoodCount);
         initObstCount = Utils.GetNewRandomInt(minObstCount, maxObstCount);
+        initEnemiesCount = Utils.GetNewRandomInt(minEnemiesCount, maxEnemiesCount);
 
         xExitCoord = width - 2;
         yExitCoord = height - 2;
@@ -129,6 +135,11 @@ public class BoardManager : MonoBehaviour
     private void GenerateFood()
     {
         GenerateCellObjects(initFoodCount, foodPrefabsArray, null);
+    }
+
+    private void GenerateEnemies()
+    {
+        GenerateCellObjects(initEnemiesCount, null, enemyCellObjPrefab);
     }
 
     /// <summary>

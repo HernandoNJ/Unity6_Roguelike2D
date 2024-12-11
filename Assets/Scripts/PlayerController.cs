@@ -1,16 +1,16 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private BoardManager m_Board;
     [SerializeField] private Animator m_Animator;
-    [SerializeField] private Vector2Int m_CellPosition;
+    [FormerlySerializedAs("m_CellPosition")] [SerializeField] private Vector2Int m_CellPos;
     [SerializeField] private Vector3 m_MoveTarget;
     [SerializeField] private float m_MoveSpeed = 5f;
     [SerializeField] private bool m_IsMoving;
     [SerializeField] private bool m_IsGameOver;
-    [SerializeField] private bool m_GameOverHandled;
 
     private void OnEnable()
     {
@@ -75,11 +75,13 @@ public class PlayerController : MonoBehaviour
             HandleDirectionalInput("x", -1);
         else if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
             HandleDirectionalInput("x", 1);
+        else if(Keyboard.current.escapeKey.wasPressedThisFrame)
+            Application.Quit();
     }
 
     private void HandleDirectionalInput(string axis, int increment)
     {
-        var newCellTarget = m_CellPosition;
+        var newCellTarget = m_CellPos;
 
         if (axis == "x") newCellTarget.x += increment;
         else if (axis == "y") newCellTarget.y += increment;
@@ -122,7 +124,7 @@ public class PlayerController : MonoBehaviour
         m_IsMoving = true;
         Debug.Log($"MoveTo is moving: {m_IsMoving}");
 
-        m_CellPosition = newCellTarget;
+        m_CellPos = newCellTarget;
         m_MoveTarget = m_Board.SetCellToWorld(newCellTarget);
         m_Animator.SetBool("Moving", true);
     }
@@ -136,8 +138,8 @@ public class PlayerController : MonoBehaviour
 
     private void SetInitialPlayerPos(Vector2Int cell)
     {
-        m_CellPosition = cell;
-        m_MoveTarget = m_Board.SetCellToWorld(m_CellPosition);
+        m_CellPos = cell;
+        m_MoveTarget = m_Board.SetCellToWorld(m_CellPos);
         transform.position = m_MoveTarget;
         m_Animator.SetBool("Moving", false);
     }
@@ -146,6 +148,9 @@ public class PlayerController : MonoBehaviour
     {
         m_IsGameOver = true;
         m_Animator.enabled = false;
+        GameManager.Instance.audioSource.Stop();
         Debug.Log("Game Over");
     }
+
+    public Vector2Int GetCellPos() => m_CellPos;
 }

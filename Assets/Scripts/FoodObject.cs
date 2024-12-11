@@ -11,5 +11,4 @@ public class FoodObject : CellObject
         GameManager.Instance.UpdateFood(foodPoints);
     }
 
-    public override int ShowPoints() => foodPoints;
 }

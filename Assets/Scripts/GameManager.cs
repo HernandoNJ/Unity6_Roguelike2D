@@ -1,14 +1,14 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
     public BoardManager boardManager;
     public PlayerController playerController;
+    public AudioSource audioSource;
     public Vector2Int initPlayerCell;
     public int m_CurrentLevel = 1;
-    public int m_CurrentFood = 0;
+    public int m_CurrentFood ;
     public int m_InitFood = 20;
     public int m_MaxFood = 50;
 
@@ -23,12 +23,22 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        { Destroy(gameObject); return; }
 
         Instance = this;
+    }
+
+    private void OnEnable()
+    {
+        // Initialize TurnHandler and subscribe to OnTick event
+        TurnHandler = new TurnHandler();
+        TurnHandler.OnTick += OnTickHandler;
+    }
+
+    private void OnDisable()
+    {
+        TurnHandler.OnTick -= OnTickHandler;
+        TurnHandler = null;
     }
 
     private void Start()
@@ -36,10 +46,6 @@ public class GameManager : MonoBehaviour
         InitializeUI();
         CheckReferences();
         StartNewGame();
-
-        // Initialize TurnHandler and subscribe to OnTick event
-        TurnHandler = new TurnHandler();
-        TurnHandler.OnTick += OnTickHandler;
     }
 
     private void InitializeUI()
@@ -75,9 +81,12 @@ public class GameManager : MonoBehaviour
         m_GameOverPanel.style.visibility = Visibility.Hidden;
 
         // Reset board and player
-        InitializeBoard();
         playerController.Init();
         playerController.Spawn(boardManager, initPlayerCell);
+        InitializeBoard();
+        
+        // Play background audio
+        audioSource.Play();
     }
 
     public void StartNewLevel()
@@ -103,6 +112,7 @@ public class GameManager : MonoBehaviour
 
     private void OnTickHandler()
     {
+        Debug.Log("Text in OnTickHandler");
         UpdateFood(-1);
     }
 
@@ -110,12 +120,19 @@ public class GameManager : MonoBehaviour
     {
         m_CurrentFood += amount;
         if(m_CurrentFood >= m_MaxFood) m_CurrentFood = m_MaxFood;
+        else if (m_CurrentFood < 0) m_CurrentFood = 0;
         
         UpdateFoodLabel();
 
         if (m_CurrentFood <= 0)
         {
             playerController.SetGameOver();
+            var enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+            foreach (var e in enemies)
+                e.GetComponent<EnemyCellObject>().HandleGameOver();            
+            
+            //EnemyCellObject.Stop
             m_GameOverPanel.style.visibility = Visibility.Visible;
             m_GameOverMessage.text = "Game Over! \n\nYou survived " + m_CurrentLevel + " levels";
         }

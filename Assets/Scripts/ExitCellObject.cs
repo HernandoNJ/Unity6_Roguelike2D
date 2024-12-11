@@ -5,10 +5,10 @@ public class ExitCellObject:CellObject
 {
     public Tile exitTile;
 
-    public override void Init(Vector2Int cellVectorArg)
+    public override void Init(Vector2Int coord)
     {
-        base.Init(cellVectorArg);
-        m_BoardManager.SetCellTile(cellVectorArg, exitTile);
+        base.Init(coord);
+        m_BoardManager.SetCellTile(coord, exitTile);
     }
 
     public override void PlayerEntered()

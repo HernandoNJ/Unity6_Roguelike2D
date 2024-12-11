@@ -3,21 +3,21 @@ using UnityEngine.Tilemaps;
 
 public class WallObject : CellObject
 {
-    public Tile obstacleTile;
+    public Tile tile;
     public int maxHealth;
 
     private Tile m_OriginalTile;
     private int m_HealthPoints;
 
-    public override void Init(Vector2Int cellVectorArg)
+    public override void Init(Vector2Int coord)
     {
-        base.Init(cellVectorArg);
+        base.Init(coord);
 
         maxHealth = 3;
         m_HealthPoints = maxHealth;
 
-        m_OriginalTile = m_BoardManager.GetCellTile(cellVectorArg);
-        m_BoardManager.SetCellTile(cellVectorArg, obstacleTile);
+        m_OriginalTile = m_BoardManager.GetCellTile(coord);
+        m_BoardManager.SetCellTile(coord, tile);
     }
 
     public override bool PlayerWantsToEnter()
@@ -31,11 +31,10 @@ public class WallObject : CellObject
         }
 
         // if m_HealthPoints = 0
-        m_BoardManager.SetCellTile(m_CellVector, m_OriginalTile);
+        m_BoardManager.SetCellTile(m_ThisCellCoord, m_OriginalTile);
         Destroy(gameObject);
         Debug.Log("pwe is true");
         return true;
     }
 
-    public override int ShowPoints() => m_HealthPoints;
 }

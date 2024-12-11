@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CellObject : MonoBehaviour
 {
-    protected Vector2Int m_CellVector;
+    protected Vector2Int m_ThisCellCoord;
     protected BoardManager m_BoardManager;
 
     private void OnEnable()
@@ -10,15 +10,13 @@ public class CellObject : MonoBehaviour
         m_BoardManager = GameManager.Instance.boardManager;
     }
 
-    public virtual void Init(Vector2Int cellVectorArg)
+    public virtual void Init(Vector2Int coord)
     {
-        m_CellVector = cellVectorArg;
+        m_ThisCellCoord = coord;
     }
     
     public virtual void PlayerEntered() { }
     
     public virtual bool PlayerWantsToEnter() => true;
-
-    public virtual int ShowPoints() => 0;
 
 }
