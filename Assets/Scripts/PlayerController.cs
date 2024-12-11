@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        //PlayerSmoothMoveToTargetCell();
+        PlayerSmoothMoveToTargetCell();
         HandleInput();
     }
 
@@ -44,19 +44,17 @@ public class PlayerController : MonoBehaviour
             m_MoveTarget,
             m_MoveSpeed * Time.deltaTime);
 
-        // player reaches move target pos
-        // if (transform.position == m_MoveTarget)
-        // {
-        //     m_Animator.SetBool("Moving", false);
-        //     m_IsMoving = false;
-        //     Debug.Log($"is moving: {m_IsMoving}");
-        // }
+        //player reaches move target pos
+        if (transform.position == m_MoveTarget)
+        {
+            m_Animator.SetBool("Moving", false);
+            m_IsMoving = false;
+            Debug.Log($"is moving: {m_IsMoving}");
+        }
     }
 
     private void HandleGameOverInput()
     {
-        Debug.Log("checking key pressed");
-
         if (Keyboard.current.enterKey.wasPressedThisFrame)
         {
             GameManager.Instance.StartNewGame();
@@ -66,7 +64,8 @@ public class PlayerController : MonoBehaviour
 
     private void HandleInput()
     {
-        //if (m_IsMoving) return;
+        // To prevent the player from moving diagonally.
+        if (m_IsMoving) return;
 
         if (Keyboard.current.upArrowKey.wasPressedThisFrame)
             HandleDirectionalInput("y", 1);
@@ -120,12 +119,11 @@ public class PlayerController : MonoBehaviour
 
     private void MoveTo(Vector2Int newCellTarget)
     {
-        //m_IsMoving = true;
-        //Debug.Log($"is moving: {m_IsMoving}");
+        m_IsMoving = true;
+        Debug.Log($"MoveTo is moving: {m_IsMoving}");
 
         m_CellPosition = newCellTarget;
         m_MoveTarget = m_Board.SetCellToWorld(newCellTarget);
-        transform.position = m_MoveTarget;
         m_Animator.SetBool("Moving", true);
     }
 
